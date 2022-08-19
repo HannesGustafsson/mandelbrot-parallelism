@@ -49,12 +49,6 @@ async def mandelbrot(min_c_re, min_c_im, max_c_re, max_c_im, x, y, inf_n):
         # Calculate mandelbrot set
         response = calc_mandelbrot(re_axis, im_axis, inf_n)
 
-        # Display for testing purposes
-        #plt.imshow(response.tolist(), extent=[min_c_im, max_c_im, min_c_re, max_c_re])
-        #plt.xlabel('Real')
-        #plt.ylabel('Imaginary')
-        #plt.show()
-
         # Send response
         return jsonify({
             'c_real': {'min': min_c_re, 'max': max_c_re},
@@ -64,6 +58,7 @@ async def mandelbrot(min_c_re, min_c_im, max_c_re, max_c_im, x, y, inf_n):
 
     except Exception as e:
         print(e)
+        return 'Internal Error', 500
 
 
 if __name__ == '__main__':
