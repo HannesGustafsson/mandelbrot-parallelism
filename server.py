@@ -40,28 +40,42 @@ async def mandelbrot(min_c_re, min_c_im, max_c_re, max_c_im, x, y, inf_n):
 
     except ValueError as e:
         return 'Invalid argument values and/or types', 400
-    
-    # Get plotting points for X and Y axis
-    re_axis = np.linspace(min_c_re, max_c_re, x)
-    im_axis = np.linspace(min_c_im, max_c_im, y)
 
-    # Calculate mandelbrot set
-    response = calc_mandelbrot(re_axis, im_axis, inf_n)
+    try:
+        # Get plotting points for X and Y axis
+        re_axis = np.linspace(min_c_re, max_c_re, x)
+        im_axis = np.linspace(min_c_im, max_c_im, y)
 
+        # Calculate mandelbrot set
+        response = calc_mandelbrot(re_axis, im_axis, inf_n)
 
-    # Send response
-    return jsonify({
-        'c_real': {'min': min_c_re, 'max': max_c_re},
-        'c_imag': {'min': min_c_im, 'max': max_c_im},
-        'data': response.tolist(),
-        }), 200
+        # Display for testing purposes
+        #plt.imshow(response.tolist(), extent=[min_c_im, max_c_im, min_c_re, max_c_re])
+        #plt.xlabel('Real')
+        #plt.ylabel('Imaginary')
+        #plt.show()
+
+        # Send response
+        return jsonify({
+            'c_real': {'min': min_c_re, 'max': max_c_re},
+            'c_imag': {'min': min_c_im, 'max': max_c_im},
+            'data': response.tolist(),
+            }), 200
+
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Mandelbrot')
-    parser.add_argument('port', type=int, help='The port on which the server should listen.')
-    args = parser.parse_args()
+    try:
+        parser = argparse.ArgumentParser(description='Mandelbrot Server')
+        parser.add_argument('port', type=int, help='The port on which the server should listen.')
+        args = parser.parse_args()
 
-    config.bind = [f'localhost:{args.port}']
+        config.bind = [f'localhost:{args.port}']
 
-    asyncio.run(serve(app, config))
+        asyncio.run(serve(app, config))
+
+    except Exception as e:
+        print(e)
+    

@@ -1,6 +1,5 @@
 import numpy as np
 import numba
-from PIL import Image
 
 
 @numba.jit # Using JIT speeds up calculation process by more than 50x
@@ -22,7 +21,7 @@ def calc_mandelbrot(real: np.ndarray, imag: np.ndarray, max_n: int) -> np.ndarra
             if np.abs(z) > 2:
                 return int(n % 256)
             
-        return (int(max_n))
+        return (256)
 
     # Create empty NDArray
     result = np.zeros((len(real), len(imag)), dtype=numba.int64)
@@ -30,6 +29,6 @@ def calc_mandelbrot(real: np.ndarray, imag: np.ndarray, max_n: int) -> np.ndarra
     # Calculate value of each point in the given set
     for re_index, re in enumerate(real):
         for im_index, im in enumerate(imag):
-            result[re_index, im_index] = calc_point(re, im)
+            result[re_index][im_index] = calc_point(re, im)
 
     return result
