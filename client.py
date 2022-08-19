@@ -75,6 +75,7 @@ if __name__ == '__main__':
 
     try:
         # Start execution timer
+        print('Starting...')
         start_time = time.time()
 
         # Divide work
